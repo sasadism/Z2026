@@ -108,19 +108,22 @@ First, log into your Cloudflare dashboard. Ensure you are using a verified email
 
 ---
 
-## ⚖️ Credits & Copyright
+## ⚖️ License & Copyright
 
-This panel was originally conceptualized and authored by Arad and Morgan. The original repository was removed for specific reasons, and this current version represents an extended, highly optimized, and heavily refactored iteration of that core logic.
+**Copyright (c) 2026 ZEUS PANEL Contributors. All Rights Reserved.**
 
-* **Original Authors:** The baseline concept and initial framework belong to [AG-Morgan](https://github.com/AG-Morgan) and [aradava](https://github.com/aradava).
-* **Current Maintainer:** The system upgrades, advanced network capabilities, UI redesign, and automated deployment infrastructure have been developed and maintained by [PANEL_ZEUS](https://t.me/PANEL_ZEUS).
+This software is provided for **personal, non-commercial use only**. By downloading or using this software, you agree to the following strict conditions:
+
+1. 🚫 **No Resale or Monetization:** You may not sell, rent, or lease this software, nor use it to provide commercial services (e.g., selling panel access or configurations).
+2. 🚫 **No Modifications or Derivatives:** You are strictly prohibited from modifying, adapting, translating, or creating derivative works based on this source code.
+3. 🚫 **No Redistribution:** You may not host, publish, or redistribute this software on any other repository, platform, or service without explicit written permission.
+
+The source code is published solely for transparency and personal deployment. For the full legal terms, please read the [LICENSE](LICENSE) file included in this repository.
 
 ---
 
-## 📄 License
+### Credits
+This panel was originally conceptualized and authored by Arad and Morgan. The current version represents an extended, highly optimized, and heavily refactored iteration of that core logic.
 
-This project is licensed under the **MIT License**. 
-
-You are free to use, modify, and distribute this software, as long as the original copyright and license notice are included. The software is provided "as is", without warranty of any kind, express or implied.
-
-For more details, please refer to the [LICENSE](LICENSE) file in the repository.
+* **Original Authors:** The baseline concept and initial framework belong to [AG-Morgan](https://github.com/AG-Morgan) and [aradava](https://github.com/aradava).
+* **Current Maintainer:** The system upgrades, advanced network capabilities, UI redesign, and automated deployment infrastructure have been developed and maintained by [PANEL_ZEUS](https://t.me/PANEL_ZEUS).
