@@ -117,7 +117,16 @@ The script features an interactive menu, automatic port configuration, random se
 <p align="center"><a href="https://donatonion.ir-netlify.workers.dev"><b>https://donatonion.ir-netlify.workers.dev</b></a></p>
 
 <p align="center">Thank you for your support in keeping this open-source project alive and actively developed! 🙏</p>
+---
+## Star History
 
+<a href="https://www.star-history.com/?repos=zeus-panel%2FZEUS-PANEL&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=zeus-panel/ZEUS-PANEL&type=date&theme=dark&legend=top-left&sealed_token=i6Bc1GNQEY6vvddp8qF2UKYCNsfnN-SVAotsRKvdr2TW2FcPNuvI6X5k7vQ9PtrTvcIZu_dPPBVkkn_m8t7vguBXuO7dCuqNgO67k6H1qA9Lz_U0GGr5Vg" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=zeus-panel/ZEUS-PANEL&type=date&legend=top-left&sealed_token=i6Bc1GNQEY6vvddp8qF2UKYCNsfnN-SVAotsRKvdr2TW2FcPNuvI6X5k7vQ9PtrTvcIZu_dPPBVkkn_m8t7vguBXuO7dCuqNgO67k6H1qA9Lz_U0GGr5Vg" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=zeus-panel/ZEUS-PANEL&type=date&legend=top-left&sealed_token=i6Bc1GNQEY6vvddp8qF2UKYCNsfnN-SVAotsRKvdr2TW2FcPNuvI6X5k7vQ9PtrTvcIZu_dPPBVkkn_m8t7vguBXuO7dCuqNgO67k6H1qA9Lz_U0GGr5Vg" />
+ </picture>
+</a>
 ---
 
 ## ⚖️ License & Copyright
