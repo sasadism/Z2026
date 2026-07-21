@@ -8,7 +8,36 @@
 [![Protocol](https://img.shields.io/badge/Protocol-VLESS%20%2F%20WebSocket-00c7b7.svg?style=for-the-badge)](https://github.com/zeus-panel/ZEUS-PANEL)
 [![License](https://img.shields.io/badge/License-Proprietary%20(Non--Commercial)-red.svg?style=for-the-badge)](https://github.com/zeus-panel/ZEUS-PANEL/blob/main/LICENSE)
 [![Telegram](https://img.shields.io/badge/Community-PANEL__ZEUS-2CA5E0.svg?style=for-the-badge&logo=telegram)](https://t.me/PANEL_ZEUS)
+</div>
 
+<img  src="https://raw.githubusercontent.com/zeus-panel/ZEUS-PANEL/refs/heads/main/photos/dark.png"  width="100%"  alt="Zeus Panel Dark Mode"  style="border-radius: 12px; margin-bottom: 15px;">
+
+  
+<img  src="https://raw.githubusercontent.com/zeus-panel/ZEUS-PANEL/refs/heads/main/photos/add.png"  width="100%"  alt="Zeus Panel Dark Mode"  style="border-radius: 12px; margin-bottom: 15px;">
+
+  
+
+<table  width="100%">
+
+<tr>
+
+<td width="50%" valign="middle" align="center">
+
+<img  src="https://raw.githubusercontent.com/zeus-panel/ZEUS-PANEL/refs/heads/main/photos/bot.jpg"  width="100%"  alt="Zeus Panel Status"  style="border-radius: 12px;">
+
+</td>
+
+<td width="50%" valign="middle" align="center">
+
+<img  src="https://raw.githubusercontent.com/zeus-panel/ZEUS-PANEL/refs/heads/main/photos/status.png"  width="100%"  alt="Zeus Panel Dark Mode"  style="border-radius: 12px;">
+
+</td>
+
+</tr>
+
+</table>
+
+  
 **A high-performance, multi-tenant network proxy management platform engineered for edge deployment on Cloudflare Workers and D1 Serverless SQL.**
 
 [Key Features](#️-key-features) • [Deployment Guide](#-quick-deployment-guide) • [SOCKS5 Proxy](#️-build-your-own-socks5-proxy-zeus-relay) • [Donate](#-donate--support) • [Credits](#️-credits--copyright)
