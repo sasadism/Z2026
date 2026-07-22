@@ -153,9 +153,9 @@ The script features an interactive menu, automatic port configuration, random se
 
 <a href="https://www.star-history.com/?repos=zeus-panel%2FZEUS-PANEL&type=date&legend=bottom-right">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=zeus-panel/ZEUS-PANEL&type=date&theme=dark&legend=bottom-right&sealed_token=ZHQFs6MCuzyj7YXblbVJOGGDYttgIUe-Tt_a4HANa2UxIzWgRKH-6833K7OuoiAbyJb-A0jK7pp0X3KzbsyoJ_0AtOcKR-L85-4qsjkNdEPT5nGqWWi_ag" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=zeus-panel/ZEUS-PANEL&type=date&legend=bottom-right&sealed_token=ZHQFs6MCuzyj7YXblbVJOGGDYttgIUe-Tt_a4HANa2UxIzWgRKH-6833K7OuoiAbyJb-A0jK7pp0X3KzbsyoJ_0AtOcKR-L85-4qsjkNdEPT5nGqWWi_ag" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=zeus-panel/ZEUS-PANEL&type=date&legend=bottom-right&sealed_token=ZHQFs6MCuzyj7YXblbVJOGGDYttgIUe-Tt_a4HANa2UxIzWgRKH-6833K7OuoiAbyJb-A0jK7pp0X3KzbsyoJ_0AtOcKR-L85-4qsjkNdEPT5nGqWWi_ag" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=zeus-panel/ZEUS-PANEL&type=date&theme=dark&legend=bottom-right&sealed_token=TgjQzw9sfe0AL5jR0BzKbYqqj0rsPAKA5jG5Y4XszBivntfZqiZcjpDh21_tNRqDRR8K4UGHNe9W3iCotFJE0Lbp8ROU2RMYii7_ZEsPeB0GpRZIXV8f5w" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=zeus-panel/ZEUS-PANEL&type=date&legend=bottom-right&sealed_token=TgjQzw9sfe0AL5jR0BzKbYqqj0rsPAKA5jG5Y4XszBivntfZqiZcjpDh21_tNRqDRR8K4UGHNe9W3iCotFJE0Lbp8ROU2RMYii7_ZEsPeB0GpRZIXV8f5w" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=zeus-panel/ZEUS-PANEL&type=date&legend=bottom-right&sealed_token=TgjQzw9sfe0AL5jR0BzKbYqqj0rsPAKA5jG5Y4XszBivntfZqiZcjpDh21_tNRqDRR8K4UGHNe9W3iCotFJE0Lbp8ROU2RMYii7_ZEsPeB0GpRZIXV8f5w" />
  </picture>
 </a>
 
