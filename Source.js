@@ -1359,8 +1359,8 @@ async function handlevIees(env, storedData = null, ctx = null, request = null) {
 		if (GLOBAL_WRITE_LOCK.get(username)) return;
 		let lastDbWrite = GLOBAL_LAST_DB_WRITE.get(username) || 0;
 		let now = Date.now();
-		let thresholdBytes = 10 * 1024 * 1024;
-		if (current >= thresholdBytes || (current > 0 && now - lastDbWrite > 60000)) {
+		let thresholdBytes = 50 * 1024 * 1024;
+		if ((current >= thresholdBytes && now - lastDbWrite > 10000) || (current > 0 && now - lastDbWrite > 60000)) {
 			GLOBAL_WRITE_LOCK.set(username, true);
 			let toCommit = GLOBAL_TRAFFIC_CACHE.get(username) || 0;
 			let toCommitReq = USER_REQ_CACHE.get(username) || 0;
@@ -1699,7 +1699,7 @@ async function handlevIees(env, storedData = null, ctx = null, request = null) {
 					}
 				}
 				const lastWrite = GLOBAL_LAST_ACTIVE_WRITE.get(username) || 0;
-				if (isNewIp || (now - lastWrite > 10000)) {
+				if (isNewIp || (now - lastWrite > 30000)) {
 					GLOBAL_LAST_ACTIVE_WRITE.set(username, now);
 					const updateTask = async () => {
 						try {
@@ -1755,10 +1755,6 @@ async function handlevIees(env, storedData = null, ctx = null, request = null) {
 						if (isBlocked) {
 							serverSock.close();
 							return;
-						}
-						const validIps = dnsCheck.filter((r) => r.type === 1 && typeof r.data === "string" && isIPv4(r.data));
-						if (validIps.length > 0) {
-							addr = validIps[0].data;
 						}
 					} catch (e) {}
 				}
@@ -1835,51 +1831,58 @@ async function handlevIees(env, storedData = null, ctx = null, request = null) {
 										} catch (e2) {}
 									}
 								}
+								let activeProxyIP = proxyIP;
+								let tryProxyFirst = false;
+								if (user?.user_proxy_ip) {
+									activeProxyIP = user.user_proxy_ip;
+									tryProxyFirst = true;
+								}
+								let fHost = activeProxyIP;
+								let fPort = port;
+								if (activeProxyIP) {
+									if (activeProxyIP.startsWith("[")) {
+										const closeIdx = activeProxyIP.indexOf("]");
+										if (closeIdx !== -1) {
+											fHost = activeProxyIP.substring(1, closeIdx);
+											if (activeProxyIP.length > closeIdx + 1 && activeProxyIP[closeIdx + 1] === ":") {
+												fPort = parseInt(activeProxyIP.substring(closeIdx + 2)) || port;
+											}
+										}
+									} else {
+										const lastColon = activeProxyIP.lastIndexOf(":");
+										if (lastColon !== -1 && activeProxyIP.indexOf(":") === lastColon) {
+											fHost = activeProxyIP.substring(0, lastColon);
+											fPort = parseInt(activeProxyIP.substring(lastColon + 1)) || port;
+										} else {
+											fHost = activeProxyIP;
+										}
+									}
+								}
+								const isCustomProxy = tryProxyFirst && activeProxyIP && activeProxyIP !== "";
+								const isCfIp = isCloudflareIP(resolvedIp);
 								let secretVipProxy = null;
-								if (isCloudflareIP(resolvedIp)) {
+								if (isCfIp) {
 									secretVipProxy = await ensureSystemVipProxy();
 								}
+								let vipSuccess = false;
 								if (secretVipProxy) {
 									try {
 										s = await connectProxy(secretVipProxy, resolvedIp, port, dataPayload);
+										vipSuccess = true;
 									} catch (vipErr) {
 										cachedSystemVipProxy = null;
-										throw vipErr;
 									}
-								} else {
-									let activeProxyIP = proxyIP;
-									let tryProxyFirst = false;
-									if (user?.user_proxy_ip) {
-										activeProxyIP = user.user_proxy_ip;
-										tryProxyFirst = true;
-									}
-									let fHost = activeProxyIP;
-									let fPort = port;
-									if (activeProxyIP) {
-										if (activeProxyIP.startsWith("[")) {
-											const closeIdx = activeProxyIP.indexOf("]");
-											if (closeIdx !== -1) {
-												fHost = activeProxyIP.substring(1, closeIdx);
-												if (activeProxyIP.length > closeIdx + 1 && activeProxyIP[closeIdx + 1] === ":") {
-													fPort = parseInt(activeProxyIP.substring(closeIdx + 2)) || port;
-												}
-											}
-										} else {
-											const lastColon = activeProxyIP.lastIndexOf(":");
-											if (lastColon !== -1 && activeProxyIP.indexOf(":") === lastColon) {
-												fHost = activeProxyIP.substring(0, lastColon);
-												fPort = parseInt(activeProxyIP.substring(lastColon + 1)) || port;
-											} else {
-												fHost = activeProxyIP;
-											}
-										}
-									}
-									const isCustomProxy = tryProxyFirst && activeProxyIP && activeProxyIP !== "";
-									if (isCustomProxy) {
+								}
+								if (!vipSuccess) {
+									if (isCfIp || isCustomProxy) {
 										try {
 											s = await connectDirect(fHost, fPort, dataPayload, targetDoh);
 										} catch (err) {
-											s = await connectDirect(addr, port, dataPayload, targetDoh);
+											if (isCustomProxy && !isCfIp) {
+												s = await connectDirect(addr, port, dataPayload, targetDoh);
+											} else {
+												throw err;
+											}
 										}
 									} else {
 										try {
@@ -2428,10 +2431,10 @@ function createDownstreamSender(webSocket, headerData = null) {
 }
 async function waitForBackpressure(ws) {
 	if (typeof ws.bufferedAmount === "number") {
-		let maxAttempts = 150;
-		while (ws.bufferedAmount > 1024 * 1024 && maxAttempts > 0) {
+		let maxAttempts = 300;
+		while (ws.bufferedAmount > 512 * 1024 && maxAttempts > 0) {
 			if (ws.readyState !== WebSocket.OPEN) break;
-			await new Promise((r) => setTimeout(r, 20));
+			await new Promise((r) => setTimeout(r, 25));
 			maxAttempts--;
 		}
 	}
@@ -3804,9 +3807,9 @@ const HTML_TEMPLATES = {
                     <div class="relative">
                         <select id="refresh-rate-select" onchange="changeRefreshRate(this.value)" class="w-full pl-8 pr-3 py-2.5 bg-white dark:bg-amoled-input border border-gray-300 dark:border-amoled-border rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 dark:text-zinc-200 cursor-pointer appearance-none">
                             <option value="1000">۱ ثانیه</option>
-                            <option value="2000" selected>۲ ثانیه (پیش‌فرض)</option>
+                            <option value="2000">۲ ثانیه</option>
                             <option value="5000">۵ ثانیه</option>
-                            <option value="10000">۱۰ ثانیه</option>
+                            <option value="10000" selected>۱۰ ثانیه (پیش‌فرض)</option>
                             <option value="30000">۳۰ ثانیه</option>
                             <option value="60000">۱ دقیقه</option>
                             <option value="300000">۵ دقیقه</option>
@@ -5529,7 +5532,7 @@ async function testUserSocksProxy() {
                 window.location.reload();
             }
         }
-const CURRENT_VERSION = '1.9.10';
+const CURRENT_VERSION = '1.9.11';
 const UPDATE_FIX = "constsCURRENT_VERSION='d.d.d'";
 		async function checkForUpdates(isManual = false) {
             try {
@@ -5699,7 +5702,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (window.usersRefreshIntervalId) {
                     clearInterval(window.usersRefreshIntervalId);
                 }
-                window.usersRefreshIntervalId = setInterval(() => loadUsers(true), intervalMs);
+                window.usersRefreshIntervalId = setInterval(() => {
+                    if (!document.hidden) loadUsers(true);
+                }, intervalMs);
             };
             window.changeRefreshRate = function(val) {
                 const ms = parseInt(val, 10);
@@ -5708,16 +5713,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 showToast('نرخ رفرش پـنـل تغییر کرد');
             };
             const savedRate = localStorage.getItem('zeus_refresh_rate');
-            const initialRate = savedRate ? parseInt(savedRate, 10) : 2000;
+            const initialRate = savedRate ? parseInt(savedRate, 10) : 10000;
             const selectEl = document.getElementById('refresh-rate-select');
             if (selectEl) {
                 selectEl.value = String(initialRate);
             }
             window.startRefreshInterval(initialRate);
 			setTimeout(() => checkForUpdates(false), 1000);
-            setInterval(() => checkForUpdates(false), 60000);
+            setInterval(() => {
+                if (!document.hidden) checkForUpdates(false);
+            }, 300000);
             setTimeout(() => checkGlobalMessage(), 50);
-            setInterval(() => checkGlobalMessage(), 60000);
+            setInterval(() => {
+                if (!document.hidden) checkGlobalMessage();
+            }, 300000);
             window.addEventListener('mousedown', (e) => {
                 window._modalMouseDownTarget = e.target;
             });
@@ -5971,7 +5980,7 @@ async function fetchAndLoadProxy() {
         fetchBtn.disabled = false;
     }
 }
-const WORKER_DONATE_URL = atob('aHR0cHM6Ly9yZXN0bGVzcy1ncmFzcy05MDNmLmlyLW5ldGxpZnkud29ya2Vycy5kZXYv');
+const WORKER_DONATE_URL = "https://si-491177.taile4bcbb.ts.net/donate";
 		function toggleDonateModal(show) {
 			setModalState('donate-modal', show);
 			if (!show) {
