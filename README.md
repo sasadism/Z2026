@@ -2,13 +2,42 @@
 
 #  ZEUS PANEL
 
-[![Version](https://img.shields.io/badge/Version-v1.9.8-blue.svg?style=for-the-badge&logo=cloudflare)](https://github.com/zeus-panel/ZEUS-PANEL)
+[![Version](https://img.shields.io/badge/Version-v1.9.9-blue.svg?style=for-the-badge&logo=cloudflare)](https://github.com/zeus-panel/ZEUS-PANEL)
 [![Platform](https://img.shields.io/badge/Platform-Cloudflare%20Workers-f38020.svg?style=for-the-badge&logo=cloudflare&logoColor=white)](https://workers.cloudflare.com/)
 [![Database](https://img.shields.io/badge/Database-Cloudflare%20D1%20SQL-F38020.svg?style=for-the-badge&logo=sqlite&logoColor=white)](https://developers.cloudflare.com/d1/)
 [![Protocol](https://img.shields.io/badge/Protocol-VLESS%20%2F%20WebSocket-00c7b7.svg?style=for-the-badge)](https://github.com/zeus-panel/ZEUS-PANEL)
 [![License](https://img.shields.io/badge/License-Proprietary%20(Non--Commercial)-red.svg?style=for-the-badge)](https://github.com/zeus-panel/ZEUS-PANEL/blob/main/LICENSE)
 [![Telegram](https://img.shields.io/badge/Community-PANEL__ZEUS-2CA5E0.svg?style=for-the-badge&logo=telegram)](https://t.me/PANEL_ZEUS)
+</div>
 
+<img  src="https://raw.githubusercontent.com/zeus-panel/ZEUS-PANEL/refs/heads/main/photos/dark.png"  width="100%"  alt="Zeus Panel Dark Mode"  style="border-radius: 12px; margin-bottom: 15px;">
+
+  
+<img  src="https://raw.githubusercontent.com/zeus-panel/ZEUS-PANEL/refs/heads/main/photos/add.png"  width="100%"  alt="Zeus Panel Dark Mode"  style="border-radius: 12px; margin-bottom: 15px;">
+
+  
+
+<table  width="100%">
+
+<tr>
+
+<td width="50%" valign="middle" align="center">
+
+<img  src="https://raw.githubusercontent.com/zeus-panel/ZEUS-PANEL/refs/heads/main/photos/bot.jpg"  width="100%"  alt="Zeus Panel Status"  style="border-radius: 12px;">
+
+</td>
+
+<td width="50%" valign="middle" align="center">
+
+<img  src="https://raw.githubusercontent.com/zeus-panel/ZEUS-PANEL/refs/heads/main/photos/status.png"  width="100%"  alt="Zeus Panel Dark Mode"  style="border-radius: 12px;">
+
+</td>
+
+</tr>
+
+</table>
+
+  
 **A high-performance, multi-tenant network proxy management platform engineered for edge deployment on Cloudflare Workers and D1 Serverless SQL.**
 
 [Key Features](#️-key-features) • [Deployment Guide](#-quick-deployment-guide) • [SOCKS5 Proxy](#️-build-your-own-socks5-proxy-zeus-relay) • [Donate](#-donate--support) • [Credits](#️-credits--copyright)
@@ -122,11 +151,11 @@ The script features an interactive menu, automatic port configuration, random se
 
 ## Star History
 
-<a href="https://www.star-history.com/?repos=zeus-panel%2FZEUS-PANEL&type=date&legend=top-left">
+<a href="https://www.star-history.com/?repos=zeus-panel%2FZEUS-PANEL&type=date&legend=bottom-right">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=zeus-panel/ZEUS-PANEL&type=date&theme=dark&legend=top-left&sealed_token=i6Bc1GNQEY6vvddp8qF2UKYCNsfnN-SVAotsRKvdr2TW2FcPNuvI6X5k7vQ9PtrTvcIZu_dPPBVkkn_m8t7vguBXuO7dCuqNgO67k6H1qA9Lz_U0GGr5Vg" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=zeus-panel/ZEUS-PANEL&type=date&legend=top-left&sealed_token=i6Bc1GNQEY6vvddp8qF2UKYCNsfnN-SVAotsRKvdr2TW2FcPNuvI6X5k7vQ9PtrTvcIZu_dPPBVkkn_m8t7vguBXuO7dCuqNgO67k6H1qA9Lz_U0GGr5Vg" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=zeus-panel/ZEUS-PANEL&type=date&legend=top-left&sealed_token=i6Bc1GNQEY6vvddp8qF2UKYCNsfnN-SVAotsRKvdr2TW2FcPNuvI6X5k7vQ9PtrTvcIZu_dPPBVkkn_m8t7vguBXuO7dCuqNgO67k6H1qA9Lz_U0GGr5Vg" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=zeus-panel/ZEUS-PANEL&type=date&theme=dark&legend=bottom-right&sealed_token=TgjQzw9sfe0AL5jR0BzKbYqqj0rsPAKA5jG5Y4XszBivntfZqiZcjpDh21_tNRqDRR8K4UGHNe9W3iCotFJE0Lbp8ROU2RMYii7_ZEsPeB0GpRZIXV8f5w" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=zeus-panel/ZEUS-PANEL&type=date&legend=bottom-right&sealed_token=TgjQzw9sfe0AL5jR0BzKbYqqj0rsPAKA5jG5Y4XszBivntfZqiZcjpDh21_tNRqDRR8K4UGHNe9W3iCotFJE0Lbp8ROU2RMYii7_ZEsPeB0GpRZIXV8f5w" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=zeus-panel/ZEUS-PANEL&type=date&legend=bottom-right&sealed_token=TgjQzw9sfe0AL5jR0BzKbYqqj0rsPAKA5jG5Y4XszBivntfZqiZcjpDh21_tNRqDRR8K4UGHNe9W3iCotFJE0Lbp8ROU2RMYii7_ZEsPeB0GpRZIXV8f5w" />
  </picture>
 </a>
 
