@@ -1,0 +1,21 @@
+{
+  "name": "zeus-panel-ui",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Standalone Railway-hosted UI for the ZEUS proxy panel. Serves the panel HTML and reverse-proxies the API to the existing Cloudflare Worker.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "extract": "node extract-templates.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "http-proxy-middleware": "^2.0.6"
+  },
+  "devDependencies": {
+    "acorn": "^8.11.3"
+  }
+}
