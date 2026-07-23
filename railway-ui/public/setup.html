@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تعریف رمز عبور پـنـل</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+<script>
+	tailwind.config = {
+		darkMode: 'class',
+		theme: {
+			extend: {
+				fontFamily: { sans: ['Vazirmatn', 'sans-serif'] },
+				colors: { amoled: { bg: '#000105', card: '#040914', input: '#081224', border: '#102040' } }
+			}
+		}
+	}
+</script>
+</head>
+<body class="bg-gray-50 text-gray-900 dark:bg-amoled-bg dark:text-zinc-100 min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md bg-white dark:bg-amoled-card border border-gray-200 dark:border-amoled-border rounded-md shadow-xl p-6">
+        <h2 class="text-xl font-bold mb-2 text-center text-blue-600 dark:text-blue-400">تنظیم رمز عبور جدید</h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400 text-center mb-6">این اولین ورود شما به پـنـل مدیریت است. لطفاً رمز عبور خود را تعیین کنید.</p>
+        <form onsubmit="handleSetup(event)" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium mb-1.5">رمز عبور</label>
+                <input type="password" id="password" class="w-full px-3 py-2 bg-gray-50 dark:bg-amoled-input border border-gray-300 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm text-center font-mono" required minlength="4">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-1.5">تکرار رمز عبور</label>
+                <input type="password" id="confirm-password" class="w-full px-3 py-2 bg-gray-50 dark:bg-amoled-input border border-gray-300 dark:border-amoled-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm text-center font-mono" required minlength="4">
+            </div>
+            <button type="submit" id="submit-btn" class="w-full py-2.5 bg-transparent border-2 border-green-600 text-green-700 hover:bg-green-900/20 hover:text-green-800 dark:border-green-500 dark:text-green-500 dark:hover:bg-green-900/40 dark:hover:text-green-400 font-medium rounded-md text-sm transition font-bold">ثبت و ورود</button>
+        </form>
+    </div>
+    <div id="toast-container" class="fixed top-5 left-1/2 -translate-x-1/2 z-[9999] flex flex-col gap-2 pointer-events-none"></div>
+    <script>
+        
+		function showToast(message, type = 'success') {
+			const container = document.getElementById('toast-container');
+			const toast = document.createElement('div');
+			const colors = type === 'error' 
+				? 'bg-red-50 dark:bg-red-900/40 border-red-200 dark:border-red-800 text-red-600 dark:text-red-400' 
+				: 'bg-green-50 dark:bg-green-900/40 border-green-200 dark:border-green-800 text-green-700 dark:text-green-500';
+			toast.className = 'px-4 py-3 border rounded-md shadow-lg font-bold text-sm transform transition-all duration-300 -translate-y-full opacity-0 ' + colors;
+			toast.innerText = message;
+			container.appendChild(toast);
+			requestAnimationFrame(() => {
+				toast.classList.remove('-translate-y-full', 'opacity-0');
+			});
+			setTimeout(() => {
+				toast.classList.add('-translate-y-full', 'opacity-0');
+				setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+        window.alert = function(message) {
+            const msgStr = message ? message.toString() : '';
+            if (msgStr.includes('خطا') || msgStr.includes('⚠️') || msgStr.includes('❌')) {
+                showToast(msgStr, 'error');
+            } else {
+                showToast(msgStr, 'success');
+            }
+        };
+;
+        async function handleSetup(event) {
+            event.preventDefault();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const btn = document.getElementById('submit-btn');
+            if (password !== confirmPassword) {
+                alert('⚠️ رمز عبور و تکرار آن مطابقت ندارند!');
+                return;
+            }
+            btn.disabled = true;
+            btn.innerText = 'در حال ثبت...';
+            try {
+                const res = await fetch('/api/setup-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password })
+                });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    alert('✅ رمز عبور با موفقیت تنظیم شد. در حال ورود...');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    alert('خطا: ' + (data.error || 'عملیات ناموفق بود'));
+                }
+            } catch (err) {
+                alert('خطا در ارتباط با سرور');
+            } finally {
+                btn.disabled = false;
+                btn.innerText = 'ثبت و ورود';
+            }
+        }
+    </script>
+</body>
+</html>
