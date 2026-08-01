@@ -359,7 +359,8 @@ export default {
 			return await Router.handleSubscription(url, env);
 		}
 		if (url.pathname.startsWith("/api/") || url.pathname === "/locations") {
-			return await Router.handleApi(request, url, env, ctx);
+			if (request.method === "OPTIONS") return Router.withCors(new Response(null, { status: 204 }), request, env);
+			return Router.withCors(await Router.handleApi(request, url, env, ctx), request, env);
 		}
 		if (url.pathname === "/panel" || url.pathname === "/login") {
 			return await Router.handlePanel(request, env);
@@ -376,6 +377,18 @@ const Router = {
 	isWebSocketUpgrade(request) {
 		const upgradeHeader = (request.headers.get("Upgrade") || "").toLowerCase();
 		return upgradeHeader === "websocket";
+	},
+	withCors(response, request, env) {
+		const origin = request.headers.get("Origin") || "";
+		const allowedOrigin = env.FRONTEND_ORIGIN || origin;
+		if (origin && (allowedOrigin === "*" || origin === allowedOrigin)) {
+			response.headers.set("Access-Control-Allow-Origin", origin);
+			response.headers.set("Access-Control-Allow-Credentials", "true");
+			response.headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+			response.headers.set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
+			response.headers.append("Vary", "Origin");
+		}
+		return response;
 	},
 	isSubscriptionPath(pathname) {
 		return pathname.startsWith("/sub/") || pathname.startsWith("/feed/");
@@ -440,17 +453,10 @@ const Router = {
 			},
 		});
 	},
-	async handleUserStatus(url, env) {
-		const username = decodeURIComponent(url.pathname.slice(8));
-		if (!username) {
-			return new Response("Username is required", { status: 400 });
-		}
-		try {
-			const user = await env.DB.prepare("SELECT * FROM users WHERE username = ? OR uuid = ?").bind(username, username).first();
-			if (!user) {
-				return new Response("User not found", { status: 404 });
-			}
-			const userJson = JSON.stringify({
+	async getUserStatusData(username, env) {
+		const user = await env.DB.prepare("SELECT * FROM users WHERE username = ? OR uuid = ?").bind(username, username).first();
+		if (!user) return null;
+		return {
 				username: user.username,
 				uuid: user.uuid,
 				limit_gb: user.limit_gb,
@@ -469,16 +475,27 @@ const Router = {
 				user_proxy_iata: user.user_proxy_iata,
 				user_socks5: user.user_socks5,
 				user_proxy_ip: user.user_proxy_ip,
-			});
-			const html = HTML_TEMPLATES.status.replace("/* {{USER_DATA_PLACEHOLDER}} */", `window.statusUser = ${userJson};`);
-			return new Response(html, {
-				headers: { "Content-Type": "text/html; charset=utf-8" },
-			});
+		};
+	},
+	async handleUserStatus(url, env) {
+		const username = decodeURIComponent(url.pathname.slice(8));
+		if (!username) return new Response("Username is required", { status: 400 });
+		try {
+			const userData = await this.getUserStatusData(username, env);
+			if (!userData) return new Response("User not found", { status: 404 });
+			const html = HTML_TEMPLATES.status.replace("/* {{USER_DATA_PLACEHOLDER}} */", `window.statusUser = ${JSON.stringify(userData)};`);
+			return new Response(html, { headers: { "Content-Type": "text/html; charset=utf-8" } });
 		} catch (err) {
 			return new Response("Error: " + err.message, { status: 500 });
 		}
 	},
 	async handleApi(request, url, env, ctx) {
+		if (url.pathname.startsWith("/api/status/") && request.method === "GET") {
+			const username = decodeURIComponent(url.pathname.slice("/api/status/".length));
+			const userData = await this.getUserStatusData(username, env);
+			if (!userData) return new Response(JSON.stringify({ error: "User not found" }), { status: 404, headers: { "Content-Type": "application/json" } });
+			return new Response(JSON.stringify(userData), { headers: { "Content-Type": "application/json" } });
+		}
 		const hasPassword = await DbService.getPanelPassword(env.DB);
 		if (url.pathname === "/api/setup-password" && request.method === "POST") {
 			if (hasPassword) {
@@ -499,7 +516,7 @@ const Router = {
 			return new Response(JSON.stringify({ success: true }), {
 				headers: {
 					"Content-Type": "application/json; charset=utf-8",
-					"Set-Cookie": "panel_session=" + hashed + "; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=31536000",
+					"Set-Cookie": "panel_session=" + hashed + "; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=31536000",
 				},
 			});
 		}
@@ -536,7 +553,7 @@ const Router = {
 				return new Response(JSON.stringify({ success: true }), {
 					headers: {
 						"Content-Type": "application/json; charset=utf-8",
-						"Set-Cookie": "panel_session=" + hashedInput + "; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=31536000",
+						"Set-Cookie": "panel_session=" + hashedInput + "; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=31536000",
 					},
 				});
 			} else {
@@ -554,7 +571,7 @@ const Router = {
 			return new Response(JSON.stringify({ success: true }), {
 				headers: {
 					"Content-Type": "application/json; charset=utf-8",
-					"Set-Cookie": "panel_session=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Secure; SameSite=Lax",
+					"Set-Cookie": "panel_session=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Secure; SameSite=None",
 				},
 			});
 		}
@@ -763,7 +780,7 @@ const Router = {
 			return new Response(JSON.stringify({ success: true }), {
 				headers: {
 					"Content-Type": "application/json; charset=utf-8",
-					"Set-Cookie": "panel_session=" + newHash + "; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=31536000",
+					"Set-Cookie": "panel_session=" + newHash + "; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=31536000",
 				},
 			});
 		}

@@ -1,0 +1,4 @@
+/panel /panel.html 200
+/login /login.html 200
+/status/* /status.html 200
+/* /index.html 200
