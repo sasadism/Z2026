@@ -1,0 +1,1 @@
+{"scripts":{"build":"node scripts/build-frontend.mjs","start":"npx serve -s public -l ${PORT:-3000}"},"devDependencies":{"serve":"latest"}}
